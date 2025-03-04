@@ -18647,5 +18647,1194 @@ A. Rastogi, A. Senthilnathan, R. Sharma, and N. Swamy, “Ranking
 LLM-generated loop invariants for program verification,” in The
 2023 Conference on Empirical Methods in Natural Language
 Processing, 2023. [Online]. Available: https://openreview.net/forum?id=
-R7f5euZ9RA
+R7f5euZ9RAHow are you managing the configuration of your workload?
+We automate creation of Azure Analysis Services instances with ARM templates, PowerShell scripts, or Bicep files. 
+We use Dynamic Management Views (DMVs) in Analysis Services to monitor server instances. 
+We monitor server metrics provided by Azure Monitor (memory, CPU usage, number of client connections, query resource consumption, etc.). 
+We enable diagnostic logging for Azure Analysis Services to monitor and send logs to Azure storage, stream them to Azure Event Hubs, or export them to Azure Monitor logs. 
+We add resource health alerts for metrics such as memory usage, memory limit High, and memory limit Hard. 
+None of the above. 
+________________________________________
+What operational considerations are you making regarding the deployment of your workload?
+We're becoming familiar with Azure Analysis Services resource and object limits to learn what happens when those resource limits are hit or exceeded, and describe the resource governance mechanisms used to enforce these limits. 
+No routine and manual operational changes are performed outside of IaC (Infrastructure as Code) to prevent configuration drift by enforcing consistency representing desired environment states. 
+Critical test environments have 1:1 parity with the production environment. 
+None of the above. 
+________________________________________
+What processes and procedures have you adopted to optimize workload operability?
+Specific methodologies, like DevOps, are used to structure the development and operations process. 
+We leverage central Azure monitoring tools like Azure Monitor. 
+Data analysts, data engineers, development teams, and the operations team collaborate to resolve production issues that are clearly defined and well understood. 
+Operational shortcomings and failures are analyzed, post-mortems are performed and used to improve and refine operational procedures. 
+There are tools or processes in place, such as Microsoft Entra Privileged Identity Management, to grant access to critical instances on a just-in-time basis. 
+Azure Resource Tags are used to enrich our AAS instance with operational metadata. 
+There are tools and processes, like Azure Policy, in place to govern available services, enforce mandatory operational functionality and ensure compliance. 
+________________________________________
+How are you monitoring for a healthy workload?
+We use Azure Monitor to perform more in-depth diagnostics, track performance, and identify trends using the platform metrics. 
+We use Azure Diagnostics to offload Platform logs. 
+We use Extended Events. 
+We use Dynamic Management Views (DMVs). 
+________________________________________
+Analysis Services: Performance Efficiency 
+How are you designing your workload to scale?
+We maintain a healthy workload by automating the scaling of the Azure Analysis Services instances. 
+We use read-only replicas scale-out to have queries return consistent data while processing data. 
+We separate the processing server from the query pool to ensure that client queries aren't affected by processing operations. 
+None of the above. 
+________________________________________
+How are you handling user load?
+We create a query pool with up to seven additional query replicas (eight total, including the server). 
+We simplify the query or its calculations if the query is too memory intensive. 
+________________________________________
+How are you ensuring that you have sufficient memory?
+We monitor datasets to not exceed available server resource memory. 
+We monitor the memory usage broken out by database. 
+None of the above. 
+________________________________________
+How are you managing your data to handle scale?
+We use partitioning to take advantage of incremental loads. 
+We refresh (process) in-memory models to update cached data from data sources. 
+We keep the data model as simple as possible by removing unneeded columns and keeping the size to the minimum, paying attention to the data types. 
+None of the above. 
+________________________________________
+How are you monitoring to ensure the workload is scaling appropriately?
+With Azure service principal support, we perform unattended refresh operations using PowerShell, TOM, TMSL, or REST to make sure our model data is always up to date. 
+We implement asynchronous refresh with the REST APIs to mitigate long-running operations. 
+None of the above. 
+________________________________________
+Data Factory: Reliability 
+Data Factory: Security 
+Data Factory: Cost Optimization 
+Data Factory: Operational Excellence 
+Data Factory: Performance Efficiency 
+Azure Databricks: Reliability 
+How do you implement reliability Best Practices?
+We deploy workspaces in multiple subscriptions based on service limits, including Databricks workspace limits and Azure subscription limits. 
+We leverage clusters pools with TTL=60 min, or interactive clusters for job-based scenarios where we expect to spin up or down quickly. 
+We stagger job-based clusters in the same workspace for scenarios requiring quick spin up and down of job clusters at less than 5 minutes as the recommended interval. 
+We use Cluster Scoped Init scripts rather than global or named scripts. 
+We ensure that we've configured an appropriate level of data redundancy for our use case. 
+None of the above. 
+________________________________________
+How do you implement disaster recovery scenarios?
+We disable RA-GRS stores in development subscriptions to reduce cost. 
+We use RA-GRS storage accounts only when required to meet disaster planning. 
+We enable soft delete, snapshot, and point in time recovery (PITR) for storage. 
+We perform daily backups of Databricks configuration. 
+We use the cluster log delivery feature to manage logs. 
+________________________________________
+Azure Databricks: Security 
+How do you implement security Best Practices?
+We store any production data in default Azure Databricks file system (DBFS) folders. 
+We deploy the Databricks workspace in our virtual network. 
+We review and plan to implement controls in Microsoft Blueprints for HiTrust / HIPAA and PCI/DSS. 
+We have a process in place to periodically regenerate our account keys. 
+We implement a security development lifecycle and threat model to assess risks in our application. 
+We enable advanced threat protection for storage. 
+________________________________________
+How do you implement authentication controls?
+We enable access control lists to configure permissions at the workspace, clusters, pools, jobs, and data tables. 
+We use credential passthrough to authenticate automatically. 
+We use Azure Key Vault (AKV) to store secrets, including credentials. 
+We enable customer manage keys (CMK) for notebooks and root Databricks File System (DBFS). 
+We enable Oauth authentication. 
+________________________________________
+How do you implement encryption on your clusters?
+We encrypt traffic between clusters and worker nodes. 
+We set up a minimum transport layer security (TLS) version for all storage accounts to TLS 1.2. 
+We limit shared access signature (third-party tools) tokens to HTTPS connections only. 
+None of the above. 
+________________________________________
+How do you implement security at the networking level?
+We enable IP access lists to restrict access to certain IP addresses. 
+We limit private IP addresses. 
+We leverage Azure Private Endpoint. 
+We leverage No Public IP (NPIP). 
+We safelist service principals' names and personal access tokens. 
+We enable virtual network (Vnet) injection. 
+None of the above. 
+________________________________________
+How do you audit and monitor your Databricks platform for security?
+We enable audit logging. 
+We ingest log data into a security information and event manager (SIEM) for security monitoring. 
+We review and reconcile user access. 
+________________________________________
+Azure Databricks: Cost Optimization 
+How do you implement cost optimization Best Practices?
+Users can share autoscaling clusters rather than each user having to create a separate cluster. 
+We leverage the right SKU for the scenario, that is, Jobs Compute for data engineering and Batch ELT workload with single Jobs Compute cluster. 
+We use chargeback scenarios. 
+We review file formats and compute and network and identify areas for cost optimization. 
+We regularly use the delta optimizer to merge small files into larger files. 
+None of the above. 
+________________________________________
+How do you implement cost savings?
+We pre-purchase commit units and reserve VM instances when possible. 
+We choose Azure regions that offer the lowest cost while meeting performance requirements. 
+None of the above. 
+________________________________________
+How do you monitor Azure Databricks costs?
+We monitor costs of clusters using the cost analysis report. 
+We set up budget alerts to monitor costs. 
+We use Databricks Overwatch. 
+None of the above. 
+________________________________________
+Azure Databricks: Operational Excellence 
+How do you implement operational Best Practices?
+We do regular performance, scalability, and stress testing. 
+We build a process to review Azure Advisor and Azure Security Center recommendations on a regular cadence. 
+We review and address platform changes from the release notes. 
+We split workspaces for Dev, QA, and Production. 
+We use automated clusters for production jobs instead of interactive clusters. 
+We run auto-optimization to improve performance for the downstream. 
+We optimize and curate delta tables (silver tables). 
+We review the continuous integration and continuous deployment (CI/CD) automation framework. 
+We run monthly log reviews to validate environment health. 
+We terminate and rebuild clusters on a frequent basis to ensure Databricks clusters are patched by Microsoft. 
+________________________________________
+How do you monitor your Databricks platform for operations?
+We enable logging and alerting for all components in the Databricks platform. 
+We use dashboards to visualize metrics. 
+We set up any cluster activity monitoring. 
+We enable storage account logging. 
+We put a single point of log aggregation in place. 
+We use Network Watcher to collect and Monitor network activity. 
+We ensure that all application-level monitoring is enabled. 
+We use a single pane of glass with telemetry using Log Analytics logs to EventHub for consumption by other systems. 
+We consider ingesting selected logs from Azure storage accounts to Azure Monitor. 
+We monitor for 500 errors by Databricks, Blob storage, or other HTTP endpoints. 
+We implement cluster secure management. 
+________________________________________
+What components of your Azure environment do you monitor as part of your operations practice?
+We use approved time synchronization sources. 
+We configure central security log management. 
+We enable audit logging for Azure resources. 
+We collect security logs from operating systems. 
+We configure security log storage retention. 
+We monitor and review logs. 
+We enable alerts for anomalous activities. 
+We centralize anti-malware logging. 
+We enable DNS query logging. 
+We enable command-line audit logging. 
+________________________________________
+Azure Databricks: Performance Efficiency 
+How do you implement performance Best Practices?
+We choose the correct cluster size by doing iterative performance testing. 
+We regularly conduct rigorous quality and unit testing to validate performance that meets requirements. 
+We leverage the auto-scaling feature with auto-terminate. 
+We turn shuffle off for optimal performance. 
+We check for data skew. 
+We ensure that the file size and format are homogenous. 
+We consistently use DataFrame API and SparkSQL. 
+We avoid user-defined functions (UDFs) , especially in Python or R. 
+We consider and test repartitioning if we need to join large tables. 
+We ensure Azure limits are increased, for example, Public IP limits and so on. 
+________________________________________
+How do you optimize performance efficiency?
+We reorder skew joins. 
+We optimize for performance with Delta Lake format to get the best price to performance ratio. 
+We partition our data. 
+We check for large shuffle joins and try replacing them with broadcasts. 
+We use Delta Lake with Z-order and optimize the latest Databricks Runtime (DBR) to get the best performance. 
+We use Parquet file format. 
+We use Delta-Cache. 
+________________________________________
+How do you test performance efficiency on the Azure Databricks clusters?
+We run a proof of concept to determine how often to execute based on data ingestion and query patterns. 
+We engage with Azure Engineers to ensure that capacity can be handled in the backend and limits get increased. 
+We engage with the networking team during testing. 
+We ensure throttling is not hit by setting up Azure Data Lake Storage Gen 2 limits. 
+We review all Azure and Databricks limits. 
+We develop a medium-sized cluster of 2-8 nodes, with VMs matched to the workload class, as explained earlier. 
+We run end to end tests on larger representative data while measuring CPU, memory, and I/O used by the cluster at an aggregate level. 
+We optimize the cluster to remove bottlenecks. 
+________________________________________
+How do you monitor your Databricks platform for performance efficiency?
+We troubleshoot performance bottlenecks by using dashboards to identify job and stage latency and streaming throughput. 
+We validate whether upstream components can sustain the load required to pass through them. 
+We run scheduled optimization on delta tables. 
+We tune shuffle for optimal performance. 
+We use autoscaling methodologies whenever possible. 
+We partition our data following Best Practices. 
+None of the above. 
+________________________________________
+How do you support interactive analytics using shared high-concurrency clusters?
+We deploy a shared cluster instead of letting each user create their cluster. 
+We create the shared cluster in High Concurrency mode instead of Standard mode. 
+We configure security on the shared high concurrency cluster. 
+None of the above. 
+________________________________________
+Data Explorer: Reliability 
+What reliability targets and metrics have you defined for your application?
+Ensure that the average CPU is running at 80% capacity or less and cache utilization is 100%. 
+Use Resource Health to monitor the status of Azure Data Explorer. 
+________________________________________
+How have you ensured that your application architecture is resilient to failures?
+This question was left unanswered 
+________________________________________
+How are you handling disaster recovery for this workload?
+This question was left unanswered 
+________________________________________
+How do you monitor and measure application health?
+This question was left unanswered 
+________________________________________
+Data Explorer: Security 
+What action are you taking to meet your compliance and governance requirements?
+This question was left unanswered 
+________________________________________
+How are you protecting data for this workload?
+This question was left unanswered 
+________________________________________
+How are you managing identity for this workload?
+This question was left unanswered 
+________________________________________
+How do you keep your Azure Data Explorer cluster from being exposed to the internet?
+This question was left unanswered 
+________________________________________
+Data Explorer: Cost optimization 
+What actions are you taking to optimize cloud costs?
+This question was left unanswered 
+________________________________________
+How do you ensure that cloud resources are appropriately provisioned?
+This question was left unanswered 
+________________________________________
+How is your organization modeling cloud costs?
+This question was left unanswered 
+________________________________________
+How do you manage the storage footprint of your digital assets?
+This question was left unanswered 
+________________________________________
+How are you monitoring your costs?
+This question was left unanswered 
+________________________________________
+What tradeoffs have you made to optimize for cost?
+This question was left unanswered 
+________________________________________
+Data Explorer: Operational excellence 
+How are you designing your applications to take DevOps into account?
+This question was left unanswered 
+________________________________________
+How are you managing the configuration of your workload?
+This question was left unanswered 
+________________________________________
+What considerations are you making around the deployment of your infrastructure?
+This question was left unanswered 
+________________________________________
+Are you using best practices for Kusto queries?
+This question was left unanswered 
+________________________________________
+How are you monitoring your deployments and workload?
+This question was left unanswered 
+________________________________________
+Data Explorer: Performance efficiency 
+How are you designing your workload to scale?
+This question was left unanswered 
+________________________________________
+How do you optimize Azure Data Explorer workloads for performance?
+This question was left unanswered 
+________________________________________
+How are you ensuring that you have sufficient capacity?
+This question was left unanswered 
+________________________________________
+How are you monitoring to ensure the workload is scaling appropriately?
+This question was left unanswered 
+________________________________________
+Synapse: Reliability 
+What reliability targets and metrics have you defined for your application?
+This question was left unanswered 
+________________________________________
+How have you ensured that your application architecture is resilient to failures?
+This question was left unanswered 
+________________________________________
+How have you ensured required capacity and services are available in targeted regions?
+This question was left unanswered 
+________________________________________
+How are you handling disaster recovery for this workload?
+This question was left unanswered 
+________________________________________
+What decisions have been taken to ensure the application platform meets your reliability requirements?
+This question was left unanswered 
+________________________________________
+How does your application logic handle exceptions and errors?
+This question was left unanswered 
+________________________________________
+What decisions have been taken to ensure networking and connectivity meets your reliability requirements?
+This question was left unanswered 
+________________________________________
+What reliability allowances for scalability and performance have you made?
+This question was left unanswered 
+________________________________________
+What reliability allowances for security have you made?
+This question was left unanswered 
+________________________________________
+What reliability allowances for operations have you made?
+This question was left unanswered 
+________________________________________
+How do you test the application to ensure it is fault tolerant?
+This question was left unanswered 
+________________________________________
+How do you monitor and measure application health?
+This question was left unanswered 
+________________________________________
+Synapse: Security 
+What design considerations did you make in your workload in regards to security?
+This question was left unanswered 
+________________________________________
+What considerations for compliance and governance do you need to take?
+This question was left unanswered 
+________________________________________
+How are you managing encryption for this workload?
+This question was left unanswered 
+________________________________________
+How are you managing identity for this workload?
+This question was left unanswered 
+________________________________________
+How have you secured the network of your workload?
+This question was left unanswered 
+________________________________________
+What tradeoffs do you need to make to meet your security goals?
+This question was left unanswered 
+________________________________________
+How are you ensuring your critical accounts are protected?
+This question was left unanswered 
+________________________________________
+Synapse: Cost Optimization 
+What actions are you taking to optimize cloud costs?
+This question was left unanswered 
+________________________________________
+How do you ensure that cloud resources are appropriately provisioned?
+This question was left unanswered 
+________________________________________
+How is your organization modeling cloud costs?
+This question was left unanswered 
+________________________________________
+How do you manage the storage footprint of your digital assets?
+This question was left unanswered 
+________________________________________
+How are you monitoring your costs?
+This question was left unanswered 
+________________________________________
+What trade-offs have you made to optimize for cost?
+This question was left unanswered 
+________________________________________
+Synapse: Operational Excellence 
+How are you designing your applications to take into account DevOps?
+This question was left unanswered 
+________________________________________
+How are you managing the configuration of your workload?
+This question was left unanswered 
+________________________________________
+What considerations are you making around the deployment of your infrastructure?
+This question was left unanswered 
+________________________________________
+How is development done on this workload?
+This question was left unanswered 
+________________________________________
+How are you monitoring your deployments and workload?
+This question was left unanswered 
+________________________________________
+How are you integrating your workloads?
+This question was left unanswered 
+________________________________________
+Synapse: Performance Efficiency 
+How are you designing your workload to scale?
+This question was left unanswered 
+________________________________________
+How do you optimize Synapse workloads for performance?
+This question was left unanswered 
+________________________________________
+How are you ensuring you have sufficient capacity?
+This question was left unanswered 
+________________________________________
+How are you managing your data to handle scale?
+This question was left unanswered 
+________________________________________
+How are you monitoring to ensure the workload is scaling appropriately?
+This question was left unanswered 
+________________________________________
+ADLS Gen2: Reliability 
+How have you ensured that your application architecture is resilient to failures?
+This question was left unanswered 
+________________________________________
+How have you ensured required capacity and services are available in targeted regions?
+This question was left unanswered 
+________________________________________
+How are you handling disaster recovery for this workload?
+This question was left unanswered 
+________________________________________
+How does your application logic handle exceptions and errors?
+This question was left unanswered 
+________________________________________
+What decisions have been taken to ensure networking and connectivity meets your reliability requirements?
+This question was left unanswered 
+________________________________________
+How do you monitor and measure application health?
+This question was left unanswered 
+________________________________________
+How do you mitigate accidental deletion of your data?
+This question was left unanswered 
+________________________________________
+How do you ensure the availability of your most critical datasets?
+This question was left unanswered 
+________________________________________
+How do you ensure that the data is reliable?
+This question was left unanswered 
+________________________________________
+ADLS Gen2: Security 
+What design considerations did you make in your workload with regard to security?
+This question was left unanswered 
+________________________________________
+What considerations for compliance and governance do you need to take?
+This question was left unanswered 
+________________________________________
+How are you managing encryption for this workload?
+This question was left unanswered 
+________________________________________
+How are you managing identity and authorization for this workload?
+This question was left unanswered 
+________________________________________
+How have you secured the network of your workload?
+This question was left unanswered 
+________________________________________
+What tradeoffs do you need to make to meet your security goals?
+This question was left unanswered 
+________________________________________
+ADLS Gen2: Cost Optimization 
+What actions are you taking to optimize cloud costs?
+This question was left unanswered 
+________________________________________
+How are you monitoring your costs?
+This question was left unanswered 
+________________________________________
+ADLS Gen2: Operational Excellence 
+What tooling do you leverage to monitor your ADLS accounts?
+This question was left unanswered 
+________________________________________
+What considerations are you making around the deployment of your workload?
+This question was left unanswered 
+________________________________________
+How are you integrating your workloads?
+This question was left unanswered 
+________________________________________
+What processes and procedures have you adopted to optimize workload operability?
+This question was left unanswered 
+________________________________________
+Has the data been organized in the data lake to optimize for access, performance, and usability?
+This question was left unanswered 
+________________________________________
+How do you make your data discoverable for users?
+This question was left unanswered 
+________________________________________
+ADLS Gen2: Performance Efficiency 
+How are you designing your workload to scale?
+This question was left unanswered 
+________________________________________
+How do you optimize ADLS workloads for performance?
+This question was left unanswered 
+________________________________________
+How are you managing your data to handle scale?
+This question was left unanswered 
+________________________________________
+How are you ensuring you have sufficient capacity?
+Review ADLS Gen2 product limits. 
+Monitor ADLS Gen2 resource utilization, query activity, and other metrics that have limitations. 
+None of the above 
+________________________________________
+•	Previous Versions 
+•	Blog 
+•	Contribute 
+•	Privacy 
+•	Terms of Use 
+•	Trademarks 
+•	© Microsoft 2025
+our overall results
+LOW 
+Room to improve. It looks like there are key items needing attention. Review the recommendations to see what actions you can take to improve your results. 
+LOW 0-12 Low: 0 to 12 
+MODERATE 12-23 Moderate: 12 to 23 
+EXCELLENT 23-35 Excellent: 23 to 35 
+Your result: 10/35 10 out of 35 
+Categories that influenced your results
+Azure AI Fundamentals 
+LOW 
+Designing and Implementing a Microsoft Azure AI Solution 
+MODERATE 
+You can find out how to improve on individual categories by reviewing the recommendations below in the report. 
+Azure AI Fundamentals 
+Fundamental AI Concepts
+Azure AI Bot Service 
+________________________________________
+Fundamentals of question answering with the Language Service
+"Create an empty knowledge base, and then manually copy and paste the FAQ entries into it. 
+________________________________________
+Fundamentals of Azure AI Document Intelligence
+Azure AI Vision resource 
+________________________________________
+Fundamentals of Azure OpenAI Service
+Azure OpenAI is Microsoft's version of ChatGPT, a chatbot that uses generative AI models. 
+________________________________________
+Designing and Implementing a Microsoft Azure AI Solution 
+Prepare to develop AI solutions on Azure
+Absolutely correct values based on conditional logic. 
+________________________________________
+Secure Azure AI services
+Switch the app to use the secondary key 
+________________________________________
+Deploy Azure AI services in containers
+Client applications must pass a subscription key to the Azure resource endpoint before using the container. 
+________________________________________
+Make recommendations with Azure AI Personalizer
+In the Azure portal, go to the Monitor page for your AI Personalizer resource, and view the Personalizer average reward. 
+________________________________________
+Analyze images
+Tags 
+________________________________________
+Classify images
+"Image classification (multiclass) 
+________________________________________
+Detect, analyze, and recognize faces
+Location 
+________________________________________
+Analyze video
+Use the Azure AI Vision service to extract key frames from the video. 
+________________________________________
+Build a question answering solution
+Create an empty knowledge base and manually enter the FAQ questions and answers. 
+________________________________________
+Build a conversational language understanding model
+Intents 
+________________________________________
+Develop an app with Azure AI Language
+Sentiment analysis 
+________________________________________
+Create a custom text classification solution
+A multiple label classification project 
+________________________________________
+Create a custom named entity extraction solution
+Recall 
+________________________________________
+Translate text with the Azure AI Translator service
+Detect 
+________________________________________
+Create speech-enabled apps with Azure AI services
+The location and one of the keys 
+________________________________________
+Translate speech with the Azure AI Speech service
+SpeechConfig 
+________________________________________
+Create an Azure Cognitive Search solution
+Add a JSON file that defines an Azure AI Search index to the blob container. 
+________________________________________
+Create a custom skill for Azure Cognitive Search
+Create a custom skill that uses an Azure Machine Learning model to predict the sentiment for a document. 
+________________________________________
+Create a knowledge store with Azure Cognitive Search
+Merge 
+________________________________________
+Enrich a search index using Language Studio
+Conversational language understanding. 
+________________________________________
+Implement advanced search features in Azure Cognitive Search
+^ 
+________________________________________
+Build an Azure Machine Learning custom skill for Azure Cognitive Search
+Real-time endpoint 
+________________________________________
+Maintain an Azure Cognitive Search Solution
+Create an Azure Cognitive Search service with a Storage Optimized service tier and at least two replicas. 
+________________________________________
+Use semantic search to get better search results in Azure Cognitive Search
+As many results as the BM25 ranking function returns. 
+________________________________________
+Improve search results using vector search in Azure Cognitive Search
+To create a search to match text input. 
+________________________________________
+Plan an Azure AI Document Intelligence solution
+A Composed model. 
+________________________________________
+Use prebuilt Azure AI Document Intelligence models
+Read model. 
+________________________________________
+Create a composed Form Recognizer model
+modelId 
+________________________________________
+Generate code with Azure OpenAI Service
+Increase in efficiency and productivity 
+________________________________________
+Generate images with Azure OpenAI Service
+GPT-35-Turbo 
+________________________________________
+Fundamentals of Responsible Generative AI
+To make a legal case that indemnifies you from responsibility for 
+AI Engineer Skill Assessment  - Mar 4, 2025 - 1:05:49 PM													
+													
+													
+Your overall results	Low	'10/35'											
+Azure AI Fundamentals	Low	'0/4'											
+Designing and Implementing a Microsoft Azure AI Solution	Moderate	'10/31'											
+													
+													
+													
+Category	Link-Text	Link	Priority	ReportingCategory	ReportingSubcategory	Weight	Context	CompleteY/N	Note				
+Azure AI Fundamentals		https://learn.microsoft.com	High			0		N					
+Azure AI Fundamentals	Microsoft Azure AI Fundamentals: Computer Vision	https://learn.microsoft.com/en-us/training/paths/explore-computer-vision-microsoft-azure/	High			0		N					
+Azure AI Fundamentals	Microsoft Azure AI Fundamentals: Natural Language Processing	https://learn.microsoft.com/en-us/training/paths/explore-natural-language-processing/	High			0		N					
+Azure AI Fundamentals	Microsoft Azure AI Fundamentals: Document Intelligence and Knowledge Mining	https://learn.microsoft.com/en-us/training/paths/document-intelligence-knowledge-mining/	High			0		N					
+Azure AI Fundamentals	Microsoft Azure AI Fundamentals: Generative AI	https://learn.microsoft.com/en-us/training/paths/introduction-generative-ai/	High			0		N					
+Designing and Implementing a Microsoft Azure AI Solution		https://learn.microsoft.com	High			0		N					
+Designing and Implementing a Microsoft Azure AI Solution	Get started with Azure AI Services	https://learn.microsoft.com/en-us/training/paths/get-started-azure-ai/	High			0		N					
+Designing and Implementing a Microsoft Azure AI Solution	Develop decision support solutions with Azure AI Services	https://learn.microsoft.com/en-us/training/paths/develop-decision-support/	High			0		N					
+Designing and Implementing a Microsoft Azure AI Solution	Create computer vision solutions with Azure AI Vision	https://learn.microsoft.com/en-us/training/paths/create-computer-vision-solutions-azure-ai/	High			0		N					
+Designing and Implementing a Microsoft Azure AI Solution	Develop natural language processing solutions with Azure AI Services	https://learn.microsoft.com/en-us/training/paths/develop-language-solutions-azure-ai/	High			0		N					
+Designing and Implementing a Microsoft Azure AI Solution	Implement knowledge mining with Azure Cognitive Search	https://learn.microsoft.com/en-us/training/paths/implement-knowledge-mining-azure-cognitive-search/	High			0		N					
+Designing and Implementing a Microsoft Azure AI Solution	Develop solutions with Azure AI Document Intelligence	https://learn.microsoft.com/en-us/training/paths/extract-data-from-forms-document-intelligence/	High			0		N					
+Designing and Implementing a Microsoft Azure AI Solution	Develop Generative AI solutions with Azure OpenAI Service	https://learn.microsoft.com/en-us/training/paths/develop-ai-solutions-azure-openai/	High			0		N					
+-----------													
+													
+Category	Question	Answers	Selected Answer	Note									
+Azure AI Fundamentals	Fundamental AI Concepts 	Azure Machine Learning											
+Azure AI Fundamentals	Fundamental AI Concepts 	Azure AI Bot Service	Azure AI Bot Service										
+Azure AI Fundamentals	Fundamental AI Concepts 	Azure AI Language											
+Azure AI Fundamentals	Fundamentals of machine learning 	Regression											
+Azure AI Fundamentals	Fundamentals of machine learning 	Classification											
+Azure AI Fundamentals	Fundamentals of machine learning 	Clustering											
+Azure AI Fundamentals	Fundamentals of Azure AI services 	A multi-service resource that includes all the AI services											
+Azure AI Fundamentals	Fundamentals of Azure AI services 	A single-service resource for each AI service											
+Azure AI Fundamentals	Fundamentals of Azure AI services 	It's not possible to see costs for individual AI services											
+Azure AI Fundamentals	Fundamentals of Computer Vision 	Timestamps in photograph metadata											
+Azure AI Fundamentals	Fundamentals of Computer Vision 	Pixels											
+Azure AI Fundamentals	Fundamentals of Computer Vision 	Image file names											
+Azure AI Fundamentals	Fundamentals of Facial Recognition 	A pair of coordinates for each face, indicating the center of the face											
+Azure AI Fundamentals	Fundamentals of Facial Recognition 	Two pairs of coordinates for each face, indicating the location of the eyes											
+Azure AI Fundamentals	Fundamentals of Facial Recognition 	A set of coordinates for each face, defining a rectangular bounding box around the face											
+Azure AI Fundamentals	Fundamentals of optical character recognition 	Azure AI Vision											
+Azure AI Fundamentals	Fundamentals of optical character recognition 	Azure AI services											
+Azure AI Fundamentals	Fundamentals of optical character recognition 	Azure AI Language											
+Azure AI Fundamentals	Fundamentals of Text Analysis with the Language Service 	Sentiment analysis											
+Azure AI Fundamentals	Fundamentals of Text Analysis with the Language Service 	Key phrase extraction											
+Azure AI Fundamentals	Fundamentals of Text Analysis with the Language Service 	Entity detection											
+Azure AI Fundamentals	Fundamentals of question answering with the Language Service 	"Create an empty knowledge base, and then manually copy and paste the FAQ entries into it.	"Create an empty knowledge base, and then manually copy and paste the FAQ entries into it.										
+Azure AI Fundamentals	Fundamentals of question answering with the Language Service 	Import the existing FAQ document into a new knowledge base.											
+Azure AI Fundamentals	Fundamentals of question answering with the Language Service 	Import a pre-defined chit-chat data source.											
+Azure AI Fundamentals	Fundamentals of conversational language understanding 	Azure AI Speech											
+Azure AI Fundamentals	Fundamentals of conversational language understanding 	Azure AI Language											
+Azure AI Fundamentals	Fundamentals of conversational language understanding 	Azure AI services											
+Azure AI Fundamentals	Fundamentals of Azure AI Speech 	Speech											
+Azure AI Fundamentals	Fundamentals of Azure AI Speech 	Language											
+Azure AI Fundamentals	Fundamentals of Azure AI Speech 	Azure AI services											
+Azure AI Fundamentals	Fundamentals of Azure AI Document Intelligence 	Azure AI Vision resource	Azure AI Vision resource										
+Azure AI Fundamentals	Fundamentals of Azure AI Document Intelligence 	Azure AI Document Intelligence or Azure AI services resource.											
+Azure AI Fundamentals	Fundamentals of Azure AI Document Intelligence 	Azure AI Language resource.											
+Azure AI Fundamentals	Fundamentals of Knowledge Mining with Azure Cognitive Search 	CSV											
+Azure AI Fundamentals	Fundamentals of Knowledge Mining with Azure Cognitive Search 	SQL											
+Azure AI Fundamentals	Fundamentals of Knowledge Mining with Azure Cognitive Search 	JSON											
+Azure AI Fundamentals	Fundamentals of Generative AI 	Models that only work with one language.											
+Azure AI Fundamentals	Fundamentals of Generative AI 	Models that only work with small amounts of data.											
+Azure AI Fundamentals	Fundamentals of Generative AI 	Models that use deep learning to process and understand natural language on a massive scale.											
+Azure AI Fundamentals	Fundamentals of Azure OpenAI Service 	Azure OpenAI is Microsoft's version of ChatGPT, a chatbot that uses generative AI models.	Azure OpenAI is Microsoft's version of ChatGPT, a chatbot that uses generative AI models.										
+Azure AI Fundamentals	Fundamentals of Azure OpenAI Service 	ChatGPT and OpenAI are chatbots that generate natural language, code, and images. Azure OpenAI provides access to these two chatbots.											
+Azure AI Fundamentals	Fundamentals of Azure OpenAI Service 	OpenAI is a research company that developed ChatGPT, a chatbot that uses generative AI models. Azure OpenAI provides access to many of OpenAI's AI models.											
+Azure AI Fundamentals	Fundamentals of Responsible Generative AI 	To make a legal case that indemnifies you from responsibility for harms caused by the solution											
+Azure AI Fundamentals	Fundamentals of Responsible Generative AI 	To document the purpose, expected use, and potential harms for the solution											
+Azure AI Fundamentals	Fundamentals of Responsible Generative AI 	To evaluate the cost of cloud services required to implement your solution											
+Designing and Implementing a Microsoft Azure AI Solution	Prepare to develop AI solutions on Azure	Absolutely correct values based on conditional logic.	Absolutely correct values based on conditional logic.										
+Designing and Implementing a Microsoft Azure AI Solution	Prepare to develop AI solutions on Azure	Randomly selected values with an equal chance of selection.											
+Designing and Implementing a Microsoft Azure AI Solution	Prepare to develop AI solutions on Azure	Probabilistic values based on correlations found in training data.											
+Designing and Implementing a Microsoft Azure AI Solution	Create and consume Azure AI services	The application must specify a valid subscription key for the Azure resource.											
+Designing and Implementing a Microsoft Azure AI Solution	Create and consume Azure AI services	The user of the application must enter a user name and password associated with the Azure subscription.											
+Designing and Implementing a Microsoft Azure AI Solution	Create and consume Azure AI services	Access to Azure AI Services is granted to anonymous users by default.											
+Designing and Implementing a Microsoft Azure AI Solution	Secure Azure AI services	Switch the app to use the secondary key	Switch the app to use the secondary key										
+Designing and Implementing a Microsoft Azure AI Solution	Secure Azure AI services	Change the resource endpoint											
+Designing and Implementing a Microsoft Azure AI Solution	Secure Azure AI services	Enable a firewall											
+Designing and Implementing a Microsoft Azure AI Solution	Monitor Azure AI services	Create an alert.											
+Designing and Implementing a Microsoft Azure AI Solution	Monitor Azure AI services	Configure diagnostic settings.											
+Designing and Implementing a Microsoft Azure AI Solution	Monitor Azure AI services	Create a dashboard.											
+Designing and Implementing a Microsoft Azure AI Solution	Deploy Azure AI services in containers	Client applications must pass a subscription key to the Azure resource endpoint before using the container.	Client applications must pass a subscription key to the Azure resource endpoint before using the container.										
+Designing and Implementing a Microsoft Azure AI Solution	Deploy Azure AI services in containers	The container must be able to connect to the Azure resource endpoint to send usage data for billing.											
+Designing and Implementing a Microsoft Azure AI Solution	Deploy Azure AI services in containers	All data passed from the client application to the container is forwarded to the Azure resource endpoint.											
+Designing and Implementing a Microsoft Azure AI Solution	Make recommendations with Azure AI Personalizer	In the Azure portal, go to the Monitor page for your AI Personalizer resource, and view the Personalizer average reward.	In the Azure portal, go to the Monitor page for your AI Personalizer resource, and view the Personalizer average reward.										
+Designing and Implementing a Microsoft Azure AI Solution	Make recommendations with Azure AI Personalizer	In the Azure portal, go to the Monitor page for your AI Personalizer resource, and view the Baseline average reward.											
+Designing and Implementing a Microsoft Azure AI Solution	Make recommendations with Azure AI Personalizer	In the Azure portal, go to the Monitor page for your AI Personalizer resource, and view the Reward achievement ratio.											
+Designing and Implementing a Microsoft Azure AI Solution	Analyze images	Tags	Tags										
+Designing and Implementing a Microsoft Azure AI Solution	Analyze images	Description											
+Designing and Implementing a Microsoft Azure AI Solution	Analyze images	Categories											
+Designing and Implementing a Microsoft Azure AI Solution	Classify images	"Image classification (multiclass)	"Image classification (multiclass)										
+Designing and Implementing a Microsoft Azure AI Solution	Classify images	Image classification (multilabel)											
+Designing and Implementing a Microsoft Azure AI Solution	Classify images	Object detection											
+Designing and Implementing a Microsoft Azure AI Solution	Detect objects in images	The location and class of specific classes of object in an image.											
+Designing and Implementing a Microsoft Azure AI Solution	Detect objects in images	The class of the main subject of an image.											
+Designing and Implementing a Microsoft Azure AI Solution	Detect objects in images	The file type of an image.											
+Designing and Implementing a Microsoft Azure AI Solution	Detect, analyze, and recognize faces	Location	Location										
+Designing and Implementing a Microsoft Azure AI Solution	Detect, analyze, and recognize faces	Type of eye-glasses											
+Designing and Implementing a Microsoft Azure AI Solution	Detect, analyze, and recognize faces	Occlusion											
+Designing and Implementing a Microsoft Azure AI Solution	Read Text in Images and Documents with the Azure AI Vision Service	Only total content and pages of text.											
+Designing and Implementing a Microsoft Azure AI Solution	Read Text in Images and Documents with the Azure AI Vision Service	Pages, words and lines of text.											
+Designing and Implementing a Microsoft Azure AI Solution	Read Text in Images and Documents with the Azure AI Vision Service	Total content, pages, words and lines of text.											
+Designing and Implementing a Microsoft Azure AI Solution	Analyze video	Use the Azure AI Vision service to extract key frames from the video.	Use the Azure AI Vision service to extract key frames from the video.										
+Designing and Implementing a Microsoft Azure AI Solution	Analyze video	Upload the video to Azure Video Indexer and index it.											
+Designing and Implementing a Microsoft Azure AI Solution	Analyze video	Store the video file in an Azure blob store container.											
+Designing and Implementing a Microsoft Azure AI Solution	Analyze text with Azure AI Language	Use the Azure AI Language service to extract key phrases.											
+Designing and Implementing a Microsoft Azure AI Solution	Analyze text with Azure AI Language	Use the Azure AI Language service to perform sentiment analysis of the comments.											
+Designing and Implementing a Microsoft Azure AI Solution	Analyze text with Azure AI Language	Use the Azure AI Language service to extract named entities from the comments.											
+Designing and Implementing a Microsoft Azure AI Solution	Build a question answering solution	Create an empty knowledge base and manually enter the FAQ questions and answers.	Create an empty knowledge base and manually enter the FAQ questions and answers.										
+Designing and Implementing a Microsoft Azure AI Solution	Build a question answering solution	Create a new knowledge base, importing the existing FAQ document.											
+Designing and Implementing a Microsoft Azure AI Solution	Build a question answering solution	"Create a new knowledge base, selecting only the Professional chit-chat source.											
+Designing and Implementing a Microsoft Azure AI Solution	Build a conversational language understanding model	Intents	Intents										
+Designing and Implementing a Microsoft Azure AI Solution	Build a conversational language understanding model	Utterances											
+Designing and Implementing a Microsoft Azure AI Solution	Build a conversational language understanding model	Entities											
+Designing and Implementing a Microsoft Azure AI Solution	Develop an app with Azure AI Language	Sentiment analysis	Sentiment analysis										
+Designing and Implementing a Microsoft Azure AI Solution	Develop an app with Azure AI Language	Key phrase extraction											
+Designing and Implementing a Microsoft Azure AI Solution	Develop an app with Azure AI Language	Entity recognition											
+Designing and Implementing a Microsoft Azure AI Solution	Create a custom text classification solution	A single label classification project											
+Designing and Implementing a Microsoft Azure AI Solution	Create a custom text classification solution	A multiple label classification project	A multiple label classification project										
+Designing and Implementing a Microsoft Azure AI Solution	Create a custom text classification solution	A varied label classification project											
+Designing and Implementing a Microsoft Azure AI Solution	Create a custom named entity extraction solution	Recall	Recall										
+Designing and Implementing a Microsoft Azure AI Solution	Create a custom named entity extraction solution	Precision											
+Designing and Implementing a Microsoft Azure AI Solution	Create a custom named entity extraction solution	F1 score											
+Designing and Implementing a Microsoft Azure AI Solution	Translate text with the Azure AI Translator service	Detect	Detect										
+Designing and Implementing a Microsoft Azure AI Solution	Translate text with the Azure AI Translator service	Translate											
+Designing and Implementing a Microsoft Azure AI Solution	Translate text with the Azure AI Translator service	Transliterate											
+Designing and Implementing a Microsoft Azure AI Solution	Create speech-enabled apps with Azure AI services	The location and one of the keys	The location and one of the keys										
+Designing and Implementing a Microsoft Azure AI Solution	Create speech-enabled apps with Azure AI services	The primary and secondary keys											
+Designing and Implementing a Microsoft Azure AI Solution	Create speech-enabled apps with Azure AI services	The endpoint and one of the keys											
+Designing and Implementing a Microsoft Azure AI Solution	Translate speech with the Azure AI Speech service	SpeechConfig	SpeechConfig										
+Designing and Implementing a Microsoft Azure AI Solution	Translate speech with the Azure AI Speech service	SpeechTranslationConfig											
+Designing and Implementing a Microsoft Azure AI Solution	Translate speech with the Azure AI Speech service	AudioConfig											
+Designing and Implementing a Microsoft Azure AI Solution	Create an Azure Cognitive Search solution	Add a JSON file that defines an Azure AI Search index to the blob container.	Add a JSON file that defines an Azure AI Search index to the blob container.										
+Designing and Implementing a Microsoft Azure AI Solution	Create an Azure Cognitive Search solution	Enable anonymous access for the blob container.											
+Designing and Implementing a Microsoft Azure AI Solution	Create an Azure Cognitive Search solution	In an Azure AI Services resource, and add a data source that references the container where the files are stored.											
+Designing and Implementing a Microsoft Azure AI Solution	Create a custom skill for Azure Cognitive Search	Create a custom skill that uses an Azure Machine Learning model to predict the sentiment for a document.	Create a custom skill that uses an Azure Machine Learning model to predict the sentiment for a document.										
+Designing and Implementing a Microsoft Azure AI Solution	Create a custom skill for Azure Cognitive Search	Create a custom skill that calls the Azure AI Language service to predict the sentiment of each document.											
+Designing and Implementing a Microsoft Azure AI Solution	Create a custom skill for Azure Cognitive Search	Add the built-in Sentiment skill to the skillset used by the indexer.											
+Designing and Implementing a Microsoft Azure AI Solution	Create a knowledge store with Azure Cognitive Search	Merge	Merge										
+Designing and Implementing a Microsoft Azure AI Solution	Create a knowledge store with Azure Cognitive Search	Shaper											
+Designing and Implementing a Microsoft Azure AI Solution	Create a knowledge store with Azure Cognitive Search	Split											
+Designing and Implementing a Microsoft Azure AI Solution	Enrich a search index using Language Studio	Conversational language understanding.	Conversational language understanding.										
+Designing and Implementing a Microsoft Azure AI Solution	Enrich a search index using Language Studio	Analyze sentiment.											
+Designing and Implementing a Microsoft Azure AI Solution	Enrich a search index using Language Studio	Custom text classification.											
+Designing and Implementing a Microsoft Azure AI Solution	Implement advanced search features in Azure Cognitive Search	+											
+Designing and Implementing a Microsoft Azure AI Solution	Implement advanced search features in Azure Cognitive Search	^	^										
+Designing and Implementing a Microsoft Azure AI Solution	Implement advanced search features in Azure Cognitive Search	!											
+Designing and Implementing a Microsoft Azure AI Solution	Build an Azure Machine Learning custom skill for Azure Cognitive Search	Real-time endpoint	Real-time endpoint										
+Designing and Implementing a Microsoft Azure AI Solution	Build an Azure Machine Learning custom skill for Azure Cognitive Search	Web service											
+Designing and Implementing a Microsoft Azure AI Solution	Build an Azure Machine Learning custom skill for Azure Cognitive Search	Batch endpoint											
+Designing and Implementing a Microsoft Azure AI Solution	Search data outside the Azure platform in Azure Cognitive Search using Azure Data Factory	You can only upload one document at a time.											
+Designing and Implementing a Microsoft Azure AI Solution	Search data outside the Azure platform in Azure Cognitive Search using Azure Data Factory	The JSON can't contain complex data types like arrays.											
+Designing and Implementing a Microsoft Azure AI Solution	Search data outside the Azure platform in Azure Cognitive Search using Azure Data Factory	You have to define the index in the Azure portal first.											
+Designing and Implementing a Microsoft Azure AI Solution	Maintain an Azure Cognitive Search Solution	Create an Azure Cognitive Search service with a Storage Optimized service tier and at least two replicas.	Create an Azure Cognitive Search service with a Storage Optimized service tier and at least two replicas.										
+Designing and Implementing a Microsoft Azure AI Solution	Maintain an Azure Cognitive Search Solution	Create an Azure Cognitive Search service with any Standard service tier and at least three replicas.											
+Designing and Implementing a Microsoft Azure AI Solution	Maintain an Azure Cognitive Search Solution	Create an Azure Cognitive Search service with a High-density service tier and one replica.											
+Designing and Implementing a Microsoft Azure AI Solution	Use semantic search to get better search results in Azure Cognitive Search	Up to 50.											
+Designing and Implementing a Microsoft Azure AI Solution	Use semantic search to get better search results in Azure Cognitive Search	As many results as the BM25 ranking function returns.	As many results as the BM25 ranking function returns.										
+Designing and Implementing a Microsoft Azure AI Solution	Use semantic search to get better search results in Azure Cognitive Search	Up to 25.											
+Designing and Implementing a Microsoft Azure AI Solution	Improve search results using vector search in Azure Cognitive Search	To create a search to match text input.	To create a search to match text input.										
+Designing and Implementing a Microsoft Azure AI Solution	Improve search results using vector search in Azure Cognitive Search	When you need to find matches across different types of data. from a search index.											
+Designing and Implementing a Microsoft Azure AI Solution	Improve search results using vector search in Azure Cognitive Search	To upload and index a document library.											
+Designing and Implementing a Microsoft Azure AI Solution	Plan an Azure AI Document Intelligence solution	A Read model.											
+Designing and Implementing a Microsoft Azure AI Solution	Plan an Azure AI Document Intelligence solution	A Layout model.											
+Designing and Implementing a Microsoft Azure AI Solution	Plan an Azure AI Document Intelligence solution	A Composed model.	A Composed model.										
+Designing and Implementing a Microsoft Azure AI Solution	Use prebuilt Azure AI Document Intelligence models	Read model.	Read model.										
+Designing and Implementing a Microsoft Azure AI Solution	Use prebuilt Azure AI Document Intelligence models	General document model.											
+Designing and Implementing a Microsoft Azure AI Solution	Use prebuilt Azure AI Document Intelligence models	ID document model.											
+Designing and Implementing a Microsoft Azure AI Solution	Extract data from forms with Azure Document Intelligence	Train Model and Get Model Labels											
+Designing and Implementing a Microsoft Azure AI Solution	Extract data from forms with Azure Document Intelligence	Analyze Invoice and Get Analyze Invoice Result											
+Designing and Implementing a Microsoft Azure AI Solution	Extract data from forms with Azure Document Intelligence	Create Azure Document Intelligence and Get Analyze Invoice Result											
+Designing and Implementing a Microsoft Azure AI Solution	Create a composed Form Recognizer model	modelId	modelId										
+Designing and Implementing a Microsoft Azure AI Solution	Create a composed Form Recognizer model	status											
+Designing and Implementing a Microsoft Azure AI Solution	Create a composed Form Recognizer model	docType											
+Designing and Implementing a Microsoft Azure AI Solution	Build an Azure AI Document Intelligence custom skill for Azure Cognitive Search	formUrl											
+Designing and Implementing a Microsoft Azure AI Solution	Build an Azure AI Document Intelligence custom skill for Azure Cognitive Search	recordId											
+Designing and Implementing a Microsoft Azure AI Solution	Build an Azure AI Document Intelligence custom skill for Azure Cognitive Search	formSasToken											
+Designing and Implementing a Microsoft Azure AI Solution	Get started with Azure OpenAI Service	text-davinci-003											
+Designing and Implementing a Microsoft Azure AI Solution	Get started with Azure OpenAI Service	gpt-35-turbo											
+Designing and Implementing a Microsoft Azure AI Solution	Get started with Azure OpenAI Service	text-embedding-ada-002 (Version 2)											
+Designing and Implementing a Microsoft Azure AI Solution	Build natural language solutions with Azure OpenAI Service	Chat, Embedding, and Completion											
+Designing and Implementing a Microsoft Azure AI Solution	Build natural language solutions with Azure OpenAI Service	Key, Endpoint, and Deployment name											
+Designing and Implementing a Microsoft Azure AI Solution	Build natural language solutions with Azure OpenAI Service	Summary, Deployment name, and Endpoint											
+Designing and Implementing a Microsoft Azure AI Solution	Apply prompt engineering with Azure OpenAI Service	By using complex instructions that are difficult to understand											
+Designing and Implementing a Microsoft Azure AI Solution	Apply prompt engineering with Azure OpenAI Service	By providing clear and descriptive instructions											
+Designing and Implementing a Microsoft Azure AI Solution	Apply prompt engineering with Azure OpenAI Service	By using vague prompts											
+Designing and Implementing a Microsoft Azure AI Solution	Generate code with Azure OpenAI Service	Increase in efficiency and productivity	Increase in efficiency and productivity										
+Designing and Implementing a Microsoft Azure AI Solution	Generate code with Azure OpenAI Service	Increase in bugs and readability											
+Designing and Implementing a Microsoft Azure AI Solution	Generate code with Azure OpenAI Service	Increase in time spent coding											
+Designing and Implementing a Microsoft Azure AI Solution	Generate images with Azure OpenAI Service	DALL-E											
+Designing and Implementing a Microsoft Azure AI Solution	Generate images with Azure OpenAI Service	GPT-35-Turbo	GPT-35-Turbo										
+Designing and Implementing a Microsoft Azure AI Solution	Generate images with Azure OpenAI Service	Text-Davinci											
+Designing and Implementing a Microsoft Azure AI Solution	Use your own data with Azure OpenAI Service	Create their own AI chat models											
+Designing and Implementing a Microsoft Azure AI Solution	Use your own data with Azure OpenAI Service	Access Azure OpenAI without an approved subscription											
+Designing and Implementing a Microsoft Azure AI Solution	Use your own data with Azure OpenAI Service	Use supported AI chat models that can reference specific sources of data											
+Designing and Implementing a Microsoft Azure AI Solution	Fundamentals of Responsible Generative AI	To make a legal case that indemnifies you from responsibility for harms caused by the solution.	To make a legal case that indemnifies you from responsibility for harms caused by the solution.										
+Designing and Implementing a Microsoft Azure AI Solution	Fundamentals of Responsible Generative AI	To document the purpose, expected use, and potential harms for the solution.											
+Designing and Implementing a Microsoft Azure AI Solution	Fundamentals of Responsible Generative AI	To evaluate the cost of cloud services required to implement your solution.											
+													
+													
+													
+
+Your overall results
+EXCELLENT 
+You are all set! Your results look strong and meet the necessary criteria for success. 
+CRITICAL 0-33 Critical: 0 to 33 
+MODERATE 33-67 Moderate: 33 to 67 
+EXCELLENT 67-100 Excellent: 67 to 100 
+Your result: 100/100 100 out of 100 
+Categories that influenced your results
+Azure Machine Learning: Cost Optimization 
+EXCELLENT 
+Azure Machine Learning: Operational Excellence 
+EXCELLENT 
+Azure Machine Learning: Performance Efficiency 
+EXCELLENT 
+Azure Machine Learning: Reliability 
+EXCELLENT 
+Azure Machine Learning: Security 
+EXCELLENT 
+You can find out how to improve on individual categories by reviewing the recommendations below in the report. 
+Azure Machine Learning: Cost Optimization 
+What steps are you taking to optimize cloud costs in Azure Machine Learning?
+We use cost management tools to plan and track costs. 
+We identify and use the right-sized compute for machine learning models. 
+We're considering the use of local compute or remote managed compute for automated machine learning to reduce costs.  
+We optimize our cloud investment with cost management. 
+We use an appropriately sized compute instance and compute cluster for training and inference.  
+None of the above. 
+________________________________________
+How does your organization model and monitor cloud costs for Azure Machine Learning?
+We plan and manage costs for Azure Machine Learning. 
+We utilize cost alerts for Azure Machine Learning. 
+We create and manage Azure budgets. 
+None of the above. 
+________________________________________
+What actions do you typically take for cost optimization in Azure Machine Learning?
+We configure our training clusters to autoscale. 
+We set quotas on our subscription and workspaces. 
+We set termination policies on our training job. 
+We use low-priority virtual machines (VMs). 
+We schedule compute instances to shut down and start up automatically. 
+We use an Azure Reserved VM Instance. 
+We train locally. 
+We parallelize training. 
+We set data retention and deletion policies. 
+We deploy resources to the same region. 
+________________________________________
+How do you ensure that you have sufficient capacity?
+We adhere to Azure Machine Learning subscription limits for compute and pipelines. 
+We review service limits in Azure Machine Learning. 
+We adhere to Azure Machine Learning subscription limits for storage. 
+None of the above. 
+________________________________________
+Azure Machine Learning: Operational Excellence 
+How are you managing your machine learning lifecycle through automation using MLOps?
+We use machine learning pipelines to orchestrate the workflow.  
+We use GitHub Actions with Azure Machine Learning.  
+We use MLFlow to track and manage ML modeling projects.  
+We use the Team Data Science Process for the data science project lifecycle.  
+None of the above. 
+________________________________________
+What considerations are you making around the deployment of your infrastructure?
+We segregate environments into development, test, and production workspaces.  
+We understand the Azure subscription limits that might impact this workload. 
+We use the Azure security baseline for Azure Machine Learning.  
+We set up separate workspaces for each publish environment. 
+None of the above. 
+________________________________________
+How is development done on Azure Machine Learning workloads?
+We use Python SDK or CLI to develop machine learning jobs. 
+We use low-code Azure Machine Learning designer to author experiments.  
+We use the Azure Machine Learning Notebook or Jupyter Notebook to author the experiment.  
+We use Azure Machine Learning automated GUI to author the experiment.  
+We use ONNX and deep learning libraries, such as Tensorflow, PyTorch, Keras, and others. 
+We use Responsible AI in our development practice. 
+None of the above. 
+________________________________________
+How do you monitor your Azure Machine Learning deployments?
+We monitor a deployed model by collecting and evaluating model data. 
+We enable logging in machine learning training runs.  
+We use alert rules and events in our application.  
+We analyze Azure Machine Learning platform metrics and logs from Azure Monitor. 
+None of the above. 
+________________________________________
+How do you manage the configuration of Azure Machine Learning deployments?
+We use code-based (SDK or CLI) definitions of our training jobs. 
+We use code-based definitions of our compute targets.  
+None of the above. 
+________________________________________
+How do you test your MLOps infrastructure?
+We use unit, regression, and integration testing with CI/CD for MLOps.  
+None of the above. 
+________________________________________
+Azure Machine Learning: Performance Efficiency 
+How are you designing your Azure Machine Learning training workload to scale?
+We use data partitioning strategy to run experiments in parallel, if possible. 
+We use autoscaling on clusters, where appropriate.  
+We use Azure Machine Learning pipeline step to process large amounts of data asynchronously and in parallel. 
+None of the above. 
+________________________________________
+How are you designing your Azure Machine Learning service to meet performance requirements?
+We use appropriate compute SKUs and sizes for different machine learning workloads. 
+We use the appropriate compute target types based on your workload requirements and environments.  
+We use datastore and dataset mounts for reusability throughout workload. 
+For unstructured files, we optimize performance by mounting data files to the compute target. 
+We use advanced automated ML options to increase performance/ROI on experiment run time.  
+________________________________________
+How do you optimize data processing speeds for Azure Machine Learning workloads?
+We set up Azure Machine Learning datastores/datasets to connect and access data from various storage services. 
+We use distributed training with Azure Machine Learning, where possible.  
+We use datasets/datastores to improve manageability, performance, and scale when working with data. 
+________________________________________
+How do you monitor model performance and lifecycle activities?
+We leverage Azure Machine Learning monitoring capabilities, such as model run logs and metrics.  
+We enable logging in Azure Machine Learning training runs. 
+We use Azure Monitor to monitor the performance of our model. 
+We leverage the Azure Machine Learning workspace job console to track workload progress. 
+________________________________________
+How do you autoscale Azure Machine Learning compute resources to handle performance for training and inferencing?
+We leverage Azure Machine Learning capabilities to autoscale the training compute nodes based on our benchmarking. 
+We leverage multinode scaling capabilities for model training. 
+We leverage production-grade model deployment and autoscaling inference using Azure Kubernetes Service cluster. 
+________________________________________
+Azure Machine Learning: Reliability 
+What reliability considerations have you defined for your Azure Machine Learning workload?
+We use a Managed Batch Endpoint for parallel batch processing. 
+We use a Managed Endpoint for scalable, self-managed service. 
+We use Azure Kubernetes Service (AKS) for high-scale production deployments with fast response time. 
+We manage and increase quotas for resources with Azure Machine Learning. 
+None of the above. 
+________________________________________
+How do you ensure that your application architecture is resilient to failures?
+We version and track Azure Machine Learning datasets. 
+We enable logging in machine learning training runs to support handling exceptions and errors. 
+We publish Azure Machine Learning components and environments. 
+None of the above. 
+________________________________________
+What decisions have you made to ensure the application platform meets your reliability requirements?
+We use scaling options for applications in Azure Kubernetes Service (AKS). 
+We use a managed endpoint for scalable deployments. 
+We manage a compute cluster in your Azure Machine Learning workspace. 
+We built a failover plan for business continuity and disaster recovery to respond to failures and disasters. 
+None of the above. 
+________________________________________
+How do you monitor and measure both the health of a training run and the health of deployed service?
+We collect machine learning log files in Application Insights.  
+We version and track Azure Machine Learning datasets. 
+We use native application monitoring. 
+None of the above. 
+________________________________________
+What framework do you use to interpret ML models and help train unbiased models?
+We check trained models for fairness. 
+We perform error analysis for trained models for reliability and safety. 
+We interpret trained models for transparency. 
+We perform causal analysis to understand how data impacts model decisions. 
+None of the above. 
+________________________________________
+Azure Machine Learning: Security 
+What design considerations did you make in your workload in regard to security?
+We use role-based access control (RBAC) to manage access to Azure Machine Learning workspaces. 
+We use Microsoft Entra ID for identity management and authentication of Azure Machine Learning users and processes for Azure Machine Learning resources and workflows. 
+We use MLOps practices for security guidance, model management, deployment, and monitoring with Azure Machine Learning. 
+We use appropriate recommendations for the Azure Machine Learning security baseline to improve security posture. 
+We review and implement appropriate guidelines from Azure Machine Learning best practices for enterprise security. 
+None of the above. 
+________________________________________
+What considerations for compliance and governance have you made for your Azure Machine Learning workload?
+We implemented a security and governance plan in accordance with guidance. 
+We audit and manage Azure Machine Learning using Azure Policy.  
+None of the above. 
+________________________________________
+How do you manage encryption for workloads?
+We use data encryption with Azure Machine Learning. 
+None of the above. 
+________________________________________
+How do you manage identity for Azure Machine Learning workloads?
+When running Azure Machine Learning workloads in Azure Kubernetes Service, we use Microsoft Entra Workload ID with Azure Machine Learning. 
+We use managed identities with Azure Machine Learning for access control. 
+None of the above. 
+________________________________________
+How have you secured the network for your workload?
+We use virtual networks (VNets) to secure an Azure Machine Learning workspace during setup. 
+We use virtual networks (VNets) to secure an Azure Machine Learning training environment.  
+We configured Azure Private Link for Azure Machine Learning to enable private endpoint for inferencing. 
+We secured an Azure Machine Learning inferencing environment with virtual networks (VNets). 
+We use Azure Machine Learning studio in an Azure virtual network (VNet). 
+We use TLS to secure web service through Azure Machine Learning. 
+None of the above. 
+________________________________________
+How do you adhere to responsible ML principles in your design?
+We use practices to protect users' data privacy in machine learning.  
+We work on encrypted data with homomorphic encryption.  
+We use model interpretability with Azure Machine Learning.  
+We assess fairness in machine learning models using open-source packages in Azure Machine Learning.  
+We perform causal inference on trained models. 
+Your overall results
+EXCELLENT 
+You are all set! Your results look strong and meet the necessary criteria for success. 
+CRITICAL 0-2 Critical: 0 to 2 
+MODERATE 2-4 Moderate: 2 to 4 
+EXCELLENT 4-6 Excellent: 4 to 6 
+Your result: 6/6 6 out of 6 
+Categories that influenced your results
+AVS | Readiness Resources 
+EXCELLENT 
+AVS | Marketplace Offer Development Resources 
+EXCELLENT 
+AVS | Specialization Resources 
+EXCELLENT 
+AVS | Cosell Acceleration Resources 
+EXCELLENT 
+You can find out how to improve on individual categories by reviewing the recommendations below in the report. 
+AVS | Readiness Resources
+
+Opportunity and Use Cases
+Migrating VMware vSphere workloads to Azure VMware Solution
+Extending hybrid and multi-cloud agility
+High availability and disaster recovery for VMware workloads
+Desktop virtualization
+Azure Migrate and Modernize and Azure Innovate
+
+Training Resources
+Introduction
+Learning Path
+Learning Resources
+Overview Video
+AVS Academy
+VMware TechZone
+VMware for Azure VMware Solution Master Specialist Exam
+AVS LAB Automation
+VMware AVS Hands-on Labs
+AVS Workshop Lab Guide
+
+Deployment Guidance
+Landing Zone Accelerator
+Landing Zone Accelerator GitHub Repository
+Landing Zone Assessment Review
+Landing Zone Assessment Network Design Guide
+Deployment Checklist
+Azure Well-Architected Assessment for AVS
+Azure Well-Architected Documentation for AVS
+Azure Proactive Resiliency Library for AVS
+AVS Updates
+AVS | Marketplace Offer Development Resources
+
+Marketplace Training and Support Resources
+Sell through the commercial marketplace
+Plan a Consulting Service Offer, applicable for AVS Service
+Partner Got-To-Market Toolbox
+AVS | Specialization Resources
+
+AVS Specialization details
+Specialization Overview
+Specialization Video
+Specialization Audit Checklist
+Specialization Assessment
+AVS | Cosell Acceleration Resources
+
+Go-To-Market Assets & Recommended Sellers Training
+AVS Customer Story
+IDC white paper: The Business Value of Azure VMware Solution
+Digital Marketing Campaign (On Demand)
+AVS Pricing Reference
+AVS Go Big for Partners
+AVS Partner Assets Collection
+AVS Pros (LinkedIn Group)
+Partners Incentives and Programs
+AVS Bootcamp Sales Track
+Azure VMware Solution (AVS) | Microsoft Partner - Mar 4, 2025 - 1:22:59 PM									
+									
+									
+Your overall results	Excellent	'6/6'							
+AVS | Readiness Resources	Excellent	'8/10'							
+AVS | Marketplace Offer Development Resources	Excellent	'3/3'							
+AVS | Specialization Resources	Excellent	'4/4'							
+AVS | Cosell Acceleration Resources	Excellent	'9/9'							
+									
+									
+									
+Category	Link-Text	Link	Priority	ReportingCategory	ReportingSubcategory	Weight	Context	CompleteY/N	Note
+AVS | Readiness Resources	Introduction	https://learn.microsoft.com/en-us/azure/azure-vmware/introduction	High			0		N	
+AVS | Readiness Resources	Learning Resources	https://aka.ms/AVSLearningResources	High			0		N	
+AVS | Readiness Resources	 Learning Path	https://aka.ms/AVSLearningPath	High			0		N	
+AVS | Readiness Resources	Overview Video	https://aka.ms/AVSWhiteboard	High			0		N	
+AVS | Readiness Resources	AVS Academy	https://aka.ms/AVSAcademy	High			0		N	
+AVS | Readiness Resources	VMware for Azure VMware Solution Master Specialist Exam	https://aka.ms/AVSExam 	High			0		N	
+AVS | Readiness Resources	VMware TechZone	https://aka.ms/AVSTechZone	High			0		N	
+AVS | Readiness Resources	Landing Zone Accelerator	https://aka.ms/AVSLZA	High			0		N	
+AVS | Readiness Resources	Landing Zone Accelerator GitHub Repository	https://aka.ms/AVSLZAAuto	High			0		N	
+AVS | Readiness Resources	Landing Zone Assessment Review	https://aka.ms/AVSLZAReview	High			0		N	
+AVS | Readiness Resources	Landing Zone Assessment Network Design Guide	https://aka.ms/AVSNDG 	High			0		N	
+AVS | Readiness Resources	Deployment Checklist	https://aka.ms/AVSChecklists	High			0		N	
+AVS | Readiness Resources	Azure Well-Architected Assessment for AVS	https://aka.ms/AVSWAF 	High			0		N	
+AVS | Readiness Resources	Azure Well-Architected Documentation for AVS	https://aka.ms/AVSWAFdocs	High			0		N	
+AVS | Readiness Resources	Azure Proactive Resiliency Library for AVS	https://aka.ms/AVSAPRL	High			0		N	
+AVS | Readiness Resources	AVS Updates 	https://aka.ms/AVSUpdates	High			0		N	
+AVS | Readiness Resources	Migrating VMware vSphere workloads to Azure VMware Solution	https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/azure-vmware/migrate	High			0		N	
+AVS | Readiness Resources	Extending hybrid and multi-cloud agility	https://learn.microsoft.com/en-us/azure/azure-vmware/enable-vmware-cds-with-azure	High			0		N	
+AVS | Readiness Resources	High availability and disaster recovery for VMware workloads	https://learn.microsoft.com/en-us/azure/azure-vmware/disaster-recovery-using-vmware-site-recovery-manager	High			0		N	
+AVS | Readiness Resources	Azure VMware Solution for Desktop virtualization	https://learn.microsoft.com/en-us/azure/azure-vmware/azure-vmware-solution-horizon	High			0		N	
+AVS | Readiness Resources	AVS LAB Automation	https://github.com/azure/avslabs	High			0		N	
+AVS | Readiness Resources	VMware AVS Hands-on Labs	https://aka.ms/AVSHOL	High			0		N	
+AVS | Readiness Resources	AVS Workshop Lab Guide	https://aka.ms/AVSHub	High			0		N	
+AVS | Marketplace Offer Development Resources	Sell through the commercial marketplace	https://learn.microsoft.com/en-us/training/paths/sell-through-commercial-marketplace/	High			0		N	
+AVS | Marketplace Offer Development Resources	Plan a Consulting Service Offer, applicable for AVS Service	https://learn.microsoft.com/en-us/partner-center/marketplace/plan-consulting-service-offer	High			0		N	
+AVS | Marketplace Offer Development Resources	Partner Got-To-Market Toolbox	http://aka.ms/gtmtoolbox	High			0		N	
+AVS | Specialization Resources	 Specialization Overview	https://aka.ms/AVSSpecial	High			0		N	
+AVS | Specialization Resources	 Specialization Video	https://aka.ms/AVSAdvSpecVideo	High			0		N	
+AVS | Specialization Resources	 Specialization Audit Checklist	https://aka.ms/AVSAdvSpecAudit	High			0		N	
+AVS | Specialization Resources	 Specialization Assessment	https://aka.ms/AVSAdvSpecAssess	High			0		N	
+AVS | Cosell Acceleration Resources	AVS Customer Story	https://aka.ms/AVSCustomerSuccess	High			0		N	
+AVS | Cosell Acceleration Resources	IDC white paper: The Business Value of Azure VMware Solution	https://aka.ms/AVSIDC 	High			0		N	
+AVS | Cosell Acceleration Resources	Digital Marketing Campaign (On Demand)	https://aka.ms/AVSDMK 	High			0		N	
+AVS | Cosell Acceleration Resources	AVS Pricing Reference	https://aka.ms/AVSPricing	High			0		N	
+AVS | Cosell Acceleration Resources	AVS Go Big for Partners	https://aka.ms/AVSPartnerGoBig	High			0		N	
+AVS | Cosell Acceleration Resources	AVS Partner Assets Collection	https://aka.ms/AVSPartnerAssets 	High			0		N	
+AVS | Cosell Acceleration Resources	AVS Pros (LinkedIn Group)	https://aka.ms/AVSPros	High			0		N	
+AVS | Cosell Acceleration Resources	Partners Incentives and Programs	https://aka.ms/PartnerIncentivesResources 	High			0		N	
+AVS | Cosell Acceleration Resources	AVS Bootcamp Sales Track	https://aka.ms/avsbootcamp2023	High			0		N	
+-----------									
+									
+Category	Question	Answers	Selected Answer	Note					
+AVS | Readiness Resources	Opportunity and Use Cases	Migrating VMware vSphere workloads to Azure VMware Solution	Migrating VMware vSphere workloads to Azure VMware Solution						
+AVS | Readiness Resources	Opportunity and Use Cases	Extending hybrid and multi-cloud agility	Extending hybrid and multi-cloud agility						
+AVS | Readiness Resources	Opportunity and Use Cases	High availability and disaster recovery for VMware workloads
+High availability and disaster recovery for VMware workloads						
+AVS | Readiness Resources	Opportunity and Use Cases	Desktop virtualization	Desktop virtualization						
+AVS | Readiness Resources	Opportunity and Use Cases	Azure Migrate and Modernize and Azure Innovate	Azure Migrate and Modernize and Azure Innovate						
+AVS | Readiness Resources	Training Resources	Introduction	Introduction						
+AVS | Readiness Resources	Training Resources	Learning Path	Learning Path						
+AVS | Readiness Resources	Training Resources	Learning Resources	Learning Resources						
+AVS | Readiness Resources	Training Resources	Overview Video	Overview Video						
+AVS | Readiness Resources	Training Resources	AVS Academy	AVS Academy						
+AVS | Readiness Resources	Training Resources	VMware TechZone	VMware TechZone						
+AVS | Readiness Resources	Training Resources	VMware for Azure VMware Solution Master Specialist Exam	VMware for Azure VMware Solution Master Specialist Exam						
+AVS | Readiness Resources	Training Resources	AVS LAB Automation	AVS LAB Automation						
+AVS | Readiness Resources	Training Resources	VMware AVS Hands-on Labs	VMware AVS Hands-on Labs						
+AVS | Readiness Resources	Training Resources	AVS Workshop Lab Guide	AVS Workshop Lab Guide						
+AVS | Readiness Resources	Deployment Guidance	Landing Zone Accelerator	Landing Zone Accelerator						
+AVS | Readiness Resources	Deployment Guidance	Landing Zone Accelerator GitHub Repository	Landing Zone Accelerator GitHub Repository						
+AVS | Readiness Resources	Deployment Guidance	Landing Zone Assessment Review	Landing Zone Assessment Review						
+AVS | Readiness Resources	Deployment Guidance	Landing Zone Assessment Network Design Guide	Landing Zone Assessment Network Design Guide						
+AVS | Readiness Resources	Deployment Guidance	Deployment Checklist	Deployment Checklist						
+AVS | Readiness Resources	Deployment Guidance	Azure Well-Architected Assessment for AVS	Azure Well-Architected Assessment for AVS						
+AVS | Readiness Resources	Deployment Guidance	Azure Well-Architected Documentation for AVS	Azure Well-Architected Documentation for AVS						
+AVS | Readiness Resources	Deployment Guidance	Azure Proactive Resiliency Library for AVS	Azure Proactive Resiliency Library for AVS						
+AVS | Readiness Resources	Deployment Guidance	VMware Workloads Assessment using Azure Migrate							
+AVS | Readiness Resources	Deployment Guidance	AVS Updates 	AVS Updates 						
+AVS | Marketplace Offer Development Resources	Marketplace Training and Support Resources	Sell through the commercial marketplace	Sell through the commercial marketplace						
+AVS | Marketplace Offer Development Resources	Marketplace Training and Support Resources	Plan a Consulting Service Offer, applicable for AVS Service	Plan a Consulting Service Offer, applicable for AVS Service						
+AVS | Marketplace Offer Development Resources	Marketplace Training and Support Resources	Partner Got-To-Market Toolbox	Partner Got-To-Market Toolbox						
+AVS | Specialization Resources	AVS Specialization details	 Specialization Overview	 Specialization Overview						
+AVS | Specialization Resources	AVS Specialization details	 Specialization Video	 Specialization Video						
+AVS | Specialization Resources	AVS Specialization details	 Specialization Audit Checklist	 Specialization Audit Checklist						
+AVS | Specialization Resources	AVS Specialization details	 Specialization Assessment	 Specialization Assessment						
+AVS | Cosell Acceleration Resources	Go-To-Market Assets & Recommended Sellers Training	AVS Customer Story	AVS Customer Story						
+AVS | Cosell Acceleration Resources	Go-To-Market Assets & Recommended Sellers Training	IDC white paper: The Business Value of Azure VMware Solution	IDC white paper: The Business Value of Azure VMware Solution						
+AVS | Cosell Acceleration Resources	Go-To-Market Assets & Recommended Sellers Training	Digital Marketing Campaign (On Demand)	Digital Marketing Campaign (On Demand)						
+AVS | Cosell Acceleration Resources	Go-To-Market Assets & Recommended Sellers Training	AVS Pricing Reference	AVS Pricing Reference						
+AVS | Cosell Acceleration Resources	Go-To-Market Assets & Recommended Sellers Training	AVS Go Big for Partners	AVS Go Big for Partners						
+AVS | Cosell Acceleration Resources	Go-To-Market Assets & Recommended Sellers Training	AVS Partner Assets Collection	AVS Partner Assets Collection						
+AVS | Cosell Acceleration Resources	Go-To-Market Assets & Recommended Sellers Training	AVS Pros (LinkedIn Group)	AVS Pros (LinkedIn Group)						
+AVS | Cosell Acceleration Resources	Go-To-Market Assets & Recommended Sellers Training	Partners Incentives and Programs	Partners Incentives and Programs						
+AVS | Cosell Acceleration Resources	Go-To-Market Assets & Recommended Sellers Training	AVS Bootcamp Sales Track	AVS Bootcamp Sales Track						
+									
+									
+
 
